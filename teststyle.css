@@ -1,0 +1,9 @@
+body *{
+    box-sizing: border-box;
+}
+
+.tile{
+    display: inline-block;
+    height: 50px;
+    width: 12vw;
+}
