@@ -1,0 +1,70 @@
+body {
+    font: 24px Helvetica;
+    background: grey;
+}
+
+#game_area {
+    min-height: 800px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-flow: row;
+}
+#game_area > .play_field {
+    margin: 4px;
+    padding: 5px;
+    border-radius: 7pt;
+    background: white;
+    flex: 60%;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+#game_area > .play_field > .tile {
+    height: 11%;
+    width: 11%;
+    margin: auto;
+    border: 5px solid palegreen;
+}
+
+#game_area > .left_field {
+    margin: 4px;
+    padding: 5px;
+    border-radius: 7pt;
+    background: powderblue;
+    flex: 20%;
+}
+
+#game_area > .right_field {
+    margin: 4px;
+    padding: 5px;
+    border-radius: 7pt;
+    background: powderblue;
+    flex: 20%;
+}
+
+header, footer {
+    display: block;
+    margin: 4px;
+    padding: 5px;
+    min-height: 100px;
+    border-radius: 7pt;
+    background: greenyellow;
+}
+
+
+@media all and (max-width: 640px) {
+
+    #game_area {
+        flex-flow: column;
+    }
+
+    #game_area > .play_field, #game_area > .left_field, #game_area > .right_field {
+        order: 0;
+    }
+
+    #game_area > .left_field, #game_area > .right_field, header, footer {
+        min-height: 50px;
+        max-height: 50px;
+    }
+}
