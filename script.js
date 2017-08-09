@@ -183,6 +183,19 @@ function Playfield(grid_width) {
             this.tiles[other_index].celestial_body = "Ready for another planet!";
             other_index = this.get_index_below(other_index);
         }
+    };
+
+    this.simple_swap = function(one_index, other_index) {
+        var temp = this.tiles[one_index].celestial_body;
+        this.tiles[one_index].celestial_body = this.tiles[other_index].celestial_body;
+        this.tiles[other_index].celestial_body = temp;
+    };
+
+    this.check_for_matches = function(original_index) {
+        var index_of_interest = original_index;
+        while ((this.get_index_left(index_of_interest) || this.get_index_left(index_of_interest) ===0) && true){
+            //TODO: finish
+        }
     }
 }
 
