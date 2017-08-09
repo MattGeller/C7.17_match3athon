@@ -3,7 +3,7 @@ $(document).ready(initialize);
 
 function initialize(){
     create_test_html();
-    game = new Game();
+    var game = new Game();
 }
 function create_test_html(){
     var temp = $('<div>').addClass('playfield');
@@ -17,7 +17,7 @@ function create_test_html(){
 }
 
 function Game() {
-    this.playfield = new Playfield(2);
+    this.playfield = null;
     this.score = null;
     this.score_to_pass = null;
     this.turns_total= null;
@@ -48,17 +48,27 @@ function Game() {
 
 function Playfield(grid_width) {
     this.tiles = [];
+    this.first_tile_clicked = null;
     this.indicies_of_tiles_marked_for_death = [];
     this.playfield_width = grid_width;
-    this.init = function(){
+    this.init = function() {
         var tile_grid = $(".tile");
-        for(var i = 0; i< grid_width*grid_width; i++){
+        for (var i = 0; i < grid_width * grid_width; i++) {
             var tile = new Tile();
+            tile.parent = this;
             tile.dom_element = tile_grid[i];
             tile.grid_position = i;
-            tile.dom_element.addEventListener("click", this.tiles[i].handle_click)
+            tile.dom_element.addEventListener("click", tile.handle_click.bind(tile))
             this.tiles[i] = tile;
         }
+    };
+    this.tile_clicked = function (tile_index){
+        if(this.first_tile_clicked === null) this.first_tile_clicked = tile_index;
+        else {
+            this.swap_attempt(this.first_tile_clicked, tile_index);
+            this.first_tile_clicked = null;
+        }
+        console.log("Tile " + tile_index + " was clicked.");
     }
     this.populateArrayIn3TileTestMode = function () {
         this.tiles.push(new Tile());
@@ -88,7 +98,6 @@ function Playfield(grid_width) {
         this.tiles[5].celestial_body = "Mars";
         this.tiles[6].celestial_body = "Jupiter";
         this.tiles[7].celestial_body = "Jupiter";
-
         this.indicies_of_tiles_marked_for_death.push(0);
     };
 
@@ -114,12 +123,7 @@ function Playfield(grid_width) {
         } else {
             return this.tiles[index_num +1].celestial_body;
         }
-    }
-    this.init();
-
-
-
-
+    };
     this.get_index_right = function(index_num) {
         if (index_num -1 % this.playfield_width === 0){
             return false;
@@ -183,15 +187,17 @@ function Playfield(grid_width) {
             this.tiles[other_index].celestial_body = "Ready for another planet!";
             other_index = this.get_index_below(other_index);
         }
-    }
+    };
+    this.init();
 }
 
 function Tile () {
+    this.parent = null;
     this.celestial_body = null;
     this.dom_element = null;
     this.grid_position = null;
     this.handle_click = function() {
-
+        this.parent.tile_clicked(this.grid_position);
     }
 
 }
