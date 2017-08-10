@@ -167,7 +167,7 @@ function Playfield(grid_width) {
             return index_num + this.playfield_width;
         }
     };
-    /*this.fill_in_from_above = function(index_num) {
+    this.fill_in_from_above = function(index_num) {
         var counter_for_how_many_new_things_come_down = 1;
         var other_index = index_num;
         //loop that happens once per row above
@@ -189,7 +189,7 @@ function Playfield(grid_width) {
             this.tiles[other_index].celestial_body = "Ready for another planet!";
             other_index = this.get_index_below(other_index);
         }
-    };*/
+    };
     //this function will be called on the highest marked for death tile in each column first followed by the lower ones.
     this.shift_column_down_by_one_tile = function(tile_to_kill_index){
         var j = this.get_index_above(tile_to_kill_index);
