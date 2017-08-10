@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
 // Header
 
 var $header = $('<header>');
@@ -75,24 +74,23 @@ $div4.appendTo('#game_area');
         $(this).css('order', 9);
         $(this).css({bottom: '86px'});
         $('#9').remove();
-        var $div7 = $('<div>', {
+        var $div6 = $('<div>', {
             class: 'tile',
             id: 1
         });
-        $div7.css('order', 1);
-        $div7.html('<img src="assets/mars.png">');
-        $div7.appendTo('.play_field');
+        $div6.css('order', 1);
+        $div6.html('<img src="assets/mars.png">');
+        $div6.appendTo('.play_field');
         $(this).animate({top: '0'});
     });
 
 
-
 // Right Field
 
-var $div6 = $('<div>', {
+var $div7 = $('<div>', {
     class: 'right_field'
 });
-$div6.appendTo('#game_area');
+$div7.appendTo('#game_area');
 
     $h2 = $('<h2>', {
         text: "LEVEL"
@@ -114,19 +112,17 @@ $footer.appendTo('body');
 
 // Win Modal
 
-// var $div6 = $('<div>',{
-//    class: 'modal',
-//     id: 'win_modal',
-//     role: 'dialog'
-// });
-// $div6.appendTo('body');
-//
-//     var $div7 = $('<div>',{
-//        class: 'modal-dialog win'
-//     });
-//     $div7.appendTo.($div6);
+var $div8 = $('<div>',{
+   class: 'modal',
+    id: 'win_modal',
+    role: 'dialog'
+});
+$div8.appendTo('body');
 
-
+    var $div9 = $('<div>',{
+       class: 'modal-dialog win'
+    });
+    $div9.appendTo($div8);
 
 
 });
