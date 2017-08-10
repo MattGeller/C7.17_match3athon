@@ -35,7 +35,8 @@ function Game() {
         this.points_awarded_per_4_match = 200;
         this.points_awarded_per_double_3_match = 300;
 
-    }
+    };
+
     this.handle_click = function(){
         var clicked_element = event.target;
         if(clicked_element.parentElement.id === 'playfield'){

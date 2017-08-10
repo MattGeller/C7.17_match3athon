@@ -71,7 +71,9 @@ $div4.appendTo('#game_area');
         $div5.appendTo('.play_field');
     }
 
-    $('.tile').click(function(){
+    $('.tile').click(move_planet_down);
+
+    function move_planet_down() {
         $(this).css('order', 9);
         $(this).css({bottom: '86px'});
         $('#9').remove();
@@ -83,8 +85,7 @@ $div4.appendTo('#game_area');
         $div7.html('<img src="assets/mars.png">');
         $div7.appendTo('.play_field');
         $(this).animate({top: '0'});
-    });
-
+    }
 
 
 // Right Field
