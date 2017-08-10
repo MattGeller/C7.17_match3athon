@@ -1,70 +1,147 @@
+
+/*Body background and font family for entire page*/
+
 body {
-    font: 24px Helvetica;
-    background: grey;
+    font-family: 'Audiowide', cursive;
+    background: url('assets/background.gif') no-repeat fixed center;
 }
 
+
+/*Entire game area div*/
+
 #game_area {
-    min-height: 800px;
+    height: 78vh;
     margin: 0;
     padding: 0;
     display: flex;
     flex-flow: row;
 }
+
+
+/*Play field area including tile grid*/
+
 #game_area > .play_field {
-    margin: 4px;
-    padding: 5px;
-    border-radius: 7pt;
-    background: white;
+    margin: 1vmin;
+    border-radius: 30pt;
+    background-color: black;
+    opacity: .85;
     flex: 60%;
     display: flex;
     flex-flow: row wrap;
 }
 
-#game_area > .play_field > .tile {
-    height: 11%;
-    width: 11%;
-    margin: auto;
-    border: 5px solid palegreen;
+
+/*This gives the tile a spinning animation*/
+
+@keyframes spintile {
+    0% { transform: rotate(0deg); }
+    100%   { transform: rotate(360deg); }
 }
+
+
+#game_area > .play_field > .tile {
+    width: 6vw;
+    height: 8vh;
+    position: relative;
+    background: url('assets/saturn.png') no-repeat;
+    margin: auto;
+    animation: spintile 40s infinite linear;
+}
+
+
+/*Left field area and Score*/
 
 #game_area > .left_field {
-    margin: 4px;
-    padding: 5px;
-    border-radius: 7pt;
-    background: powderblue;
+    margin: 4vmin;
+    border-radius: 30pt;
+    background-color: black;
+    opacity: .8;
+    font-size: 1.5vw;
+    text-align: center;
+    color: white;
+    flex: 20%;
+}
+    /*Progress Bar*/
+
+    .progressbar {
+        height: 2em;
+        width: 10em;
+        border: 5px solid mediumpurple;
+        border-radius: 30pt;
+        position: relative;
+        top: 20vh;
+        left: 1vw;
+        transform: rotate(90deg);
+    }
+
+
+/*Right field area and Level*/
+
+#game_area > .right_field {
+    margin: 4vmin;
+    border-radius: 30pt;
+    background-color: black;
+    opacity: .8;
+    font-size: 1.5vw;
+    text-align: center;
+    color: white;
     flex: 20%;
 }
 
-#game_area > .right_field {
-    margin: 4px;
-    padding: 5px;
-    border-radius: 7pt;
-    background: powderblue;
-    flex: 20%;
-}
+/*Level*/
+
+    .level {
+        color: white;
+        font-size: 8vw;
+    }
+
+/*Win Modal*/
+
+    .win {
+        position: fixed;
+        top: 20%;
+        left: 20%;
+    }
+
+
+/*Header and Footer including animation on the background*/
 
 header, footer {
     display: block;
-    margin: 4px;
-    padding: 5px;
-    min-height: 100px;
-    border-radius: 7pt;
-    background: greenyellow;
+    margin: 2vmin;
+    height: 8vh;
+    border-radius: 30pt;
+    font-size: 1.8vw;
+    text-align: center;
+    opacity: .8;
+    background: linear-gradient(270deg, #9800ff, #00c5ff);
+    background-size: 400% 400%;
+    animation: AnimationName 10s ease infinite;
+}
+
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
 
 
-@media all and (max-width: 640px) {
+/*Fix for h1 margin*/
 
-    #game_area {
-        flex-flow: column;
-    }
-
-    #game_area > .play_field, #game_area > .left_field, #game_area > .right_field {
-        order: 0;
-    }
-
-    #game_area > .left_field, #game_area > .right_field, header, footer {
-        min-height: 50px;
-        max-height: 50px;
-    }
+h1 {
+    margin: 2vmin;
 }
+
+
+/*@media all and (max-width: 640px) {*/
+
+    /*#game_area {*/
+        /*flex-flow: column;*/
+    /*}*/
+
+
+    /*#game_area > .left_field, #game_area > .right_field, header, footer {*/
+        /*min-height: 50px;*/
+        /*max-height: 50px;*/
+    /*}*/
+/*}*/
