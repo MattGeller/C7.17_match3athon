@@ -1,5 +1,5 @@
 // constructor for entire Game object
-$(document).ready(initialize);
+// $(document).ready(initialize);
 
 function initialize(){
     create_test_html();
@@ -41,7 +41,41 @@ function Game() {
         if(clicked_element.parentElement.id === 'playfield'){
             this.playfield.handle_click(clicked_element);
         }
-    }
+    };
+
+    //function to log a game with a 5x4 grid. I am too tired to write it so that it logs
+    this.log_gamestate = function () {
+        var string_to_print = "\n";
+        var i = 0;
+        for (i = 0; i <= 4; i++){
+            string_to_print += this.playfield.tiles[i].celestial_body;
+            string_to_print += "\t";
+        }
+        console.log(string_to_print);
+        string_to_print = "";
+        for (i = 5; i <= 9; i++){
+            string_to_print += this.playfield.tiles[i].celestial_body;
+            string_to_print += "\t";
+        }
+        console.log(string_to_print);
+        string_to_print = "";
+
+        for (i = 10; i <= 14; i++){
+            string_to_print += this.playfield.tiles[i].celestial_body;
+            string_to_print += "\t";
+        }
+        console.log(string_to_print);
+        string_to_print = "";
+
+        for (i = 15; i <= 19; i++){
+            string_to_print += this.playfield.tiles[i].celestial_body;
+            string_to_print += "\t";
+        }
+        console.log(string_to_print);
+        string_to_print = "";
+
+    };
+
     this.init();
 
 }
@@ -63,6 +97,9 @@ function Playfield(grid_width) {
             this.tiles[i] = tile;
         }
         this.celestial_bodies = ["Earth", "Mars", "Venus", "Jupiter", "Mercury", "Saturn"];
+        for (i = 0; i < grid_width*grid_width; i++){
+            this.marked_for_death[i] = false;
+        }
     };
     this.tile_clicked = function (tile_index){
         if(this.first_tile_clicked === null) this.first_tile_clicked = tile_index;
@@ -71,7 +108,7 @@ function Playfield(grid_width) {
             this.first_tile_clicked = null;
         }
         console.log("Tile " + tile_index + " was clicked.");
-    }
+    };
     this.populateArrayIn3TileTestMode = function () {
         this.tiles.push(new Tile());
         this.tiles.push(new Tile());
@@ -91,16 +128,43 @@ function Playfield(grid_width) {
         this.tiles.push(new Tile());
         this.tiles.push(new Tile());
         this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
+        this.tiles.push(new Tile());
 
-        this.tiles[0].celestial_body = "Venus";
-        this.tiles[1].celestial_body = "Venus";
+        this.tiles[0].celestial_body = "Mars";
+        this.tiles[1].celestial_body = "Earth";
         this.tiles[2].celestial_body = "Earth";
         this.tiles[3].celestial_body = "Earth";
-        this.tiles[4].celestial_body = "Mars";
+        this.tiles[4].celestial_body = "Saturn";
         this.tiles[5].celestial_body = "Mars";
         this.tiles[6].celestial_body = "Jupiter";
-        this.tiles[7].celestial_body = "Jupiter";
-        this.marked_for_death.push(0);
+        this.tiles[7].celestial_body = "Earth";
+        this.tiles[8].celestial_body = "Jupiter";
+        this.tiles[9].celestial_body = "Saturn";
+        this.tiles[10].celestial_body = "Jupiter";
+        this.tiles[11].celestial_body = "Mars";
+        this.tiles[12].celestial_body = "Earth";
+        this.tiles[13].celestial_body = "Saturn";
+        this.tiles[14].celestial_body = "Mars";
+        this.tiles[15].celestial_body = "Venus";
+        this.tiles[16].celestial_body = "Mars";
+        this.tiles[17].celestial_body = "Jupiter";
+        this.tiles[18].celestial_body = "Mars";
+        this.tiles[19].celestial_body = "Saturn";
+        this.playfield_width = 5;
+        for (var i = 0; i < grid_width*grid_width; i++){
+            this.marked_for_death[i] = false;
+        }
     };
 
     this.get_body_at_left = function(index_num){
@@ -126,13 +190,15 @@ function Playfield(grid_width) {
             return this.tiles[index_num +1].celestial_body;
         }
     };
+
     this.get_index_right = function(index_num) {
-        if (index_num -1 % this.playfield_width === 0){
+        if (index_num +1 % this.playfield_width === 0){
             return false;
         } else {
             return index_num +1;
         }
     };
+
     this.get_body_above = function (index_num){
         if (index_num > this.playfield_width){
             return false;
@@ -160,7 +226,7 @@ function Playfield(grid_width) {
     };
 
     this.get_index_below = function (index_num) {
-        if (index_num > this.tiles.length - this.playfield_width){
+        if (index_num >= this.tiles.length - this.playfield_width){
             return false;
         }
         else {
@@ -250,16 +316,66 @@ function Playfield(grid_width) {
             }
         }
     }
+    this.swap_attempt = function (index_1, index_2) {
+        this.simple_swap(index_1,index_2);
+        if(!(this.check_for_matches(index_1) || this.check_for_matches(index_2))){
+            this.simple_swap(index_1,index_2);
+            return false;
+        }
+        return true;
+    };
     this.simple_swap = function(one_index, other_index) {
         var temp = this.tiles[one_index].celestial_body;
         this.tiles[one_index].celestial_body = this.tiles[other_index].celestial_body;
         this.tiles[other_index].celestial_body = temp;
     };
     this.check_for_matches = function(original_index) {
+        debugger;
+        var horizontal_array = [];
+        var vertical_array = [];
         var index_of_interest = original_index;
-        while ((this.get_index_left(index_of_interest) || this.get_index_left(index_of_interest) ===0) && true){
-            //TODO: finish
+        var returnbool = false;
+
+        //go left until not a match (or reach end of playfield)
+        while ((this.get_index_left(index_of_interest) || this.get_index_left(index_of_interest) ===0) && this.tiles[this.get_index_left(index_of_interest)].celestial_body === this.tiles[original_index].celestial_body){
+            index_of_interest = this.get_index_left(index_of_interest);
         }
+        //go right, adding each index of same type to the horizontal array
+        do {
+            horizontal_array.push(index_of_interest);
+            index_of_interest = this.get_index_right(index_of_interest);
+        } while(this.tiles[index_of_interest].celestial_body === this.tiles[original_index].celestial_body);
+
+        //same thing as above but vertical
+
+        index_of_interest = original_index;
+        //go up until not a match (or reach end of playfield)
+        while ((this.get_index_above(index_of_interest) || this.get_index_above(index_of_interest) ===0) && this.tiles[this.get_index_above(index_of_interest)].celestial_body === this.tiles[original_index].celestial_body){
+            index_of_interest = this.get_index_above(index_of_interest);
+        }
+        //go down, adding each index of same type to the vertical array
+        do {
+            vertical_array.push(index_of_interest);
+            index_of_interest = this.get_index_below(index_of_interest);
+        } while(this.tiles[index_of_interest].celestial_body === this.tiles[original_index].celestial_body);
+
+        //if there's 3 or more in a row, mark each of those indices for death
+        if (horizontal_array.length >= 3){
+            for (var i = 0; i < horizontal_array.length; i++ ) {
+                this.marked_for_death[horizontal_array[i]] = true;
+            }
+            returnbool = true;
+        }
+
+        //if there's 3 or more in a column, mark each of those indices for death
+        if (vertical_array.length >= 3) {
+            for (i = 0; i < vertical_array.length; i++ ) {
+                this.marked_for_death[vertical_array[i]] = true;
+            }
+            returnbool = true;
+        }
+        //return true or false, depending on whether anything became marked for death.
+        return returnbool;
     }
     this.highest_tiles_marked_for_death_by_column = function(){
         var highest_tiles = [];
@@ -290,3 +406,6 @@ function Tile () {
 
 }
 
+//var The_Game = new Game();
+//The_Game.playfield.populateForTesting();
+// The_Game.playfield.check_for_matches(2);
