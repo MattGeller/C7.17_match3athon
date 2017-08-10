@@ -49,8 +49,9 @@ function Game() {
 function Playfield(grid_width) {
     this.tiles = [];
     this.first_tile_clicked = null;
-    this.indicies_of_tiles_marked_for_death = [];
+    this.marked_for_death = [];
     this.playfield_width = grid_width;
+    this.celestial_bodies =[];
     this.init = function() {
         var tile_grid = $(".tile");
         for (var i = 0; i < grid_width * grid_width; i++) {
@@ -58,9 +59,10 @@ function Playfield(grid_width) {
             tile.parent = this;
             tile.dom_element = tile_grid[i];
             tile.grid_position = i;
-            tile.dom_element.addEventListener("click", tile.handle_click.bind(tile))
+            tile.dom_element.addEventListener("click", tile.handle_click.bind(tile));
             this.tiles[i] = tile;
         }
+        this.celestial_bodies = ["Earth", "Mars", "Venus", "Jupiter", "Mercury", "Saturn"];
     };
     this.tile_clicked = function (tile_index){
         if(this.first_tile_clicked === null) this.first_tile_clicked = tile_index;
@@ -98,7 +100,7 @@ function Playfield(grid_width) {
         this.tiles[5].celestial_body = "Mars";
         this.tiles[6].celestial_body = "Jupiter";
         this.tiles[7].celestial_body = "Jupiter";
-        this.indicies_of_tiles_marked_for_death.push(0);
+        this.marked_for_death.push(0);
     };
 
     this.get_body_at_left = function(index_num){
@@ -165,7 +167,7 @@ function Playfield(grid_width) {
             return index_num + this.playfield_width;
         }
     };
-    this.fill_in_from_above = function(index_num) {
+    /*this.fill_in_from_above = function(index_num) {
         var counter_for_how_many_new_things_come_down = 1;
         var other_index = index_num;
         //loop that happens once per row above
@@ -174,7 +176,7 @@ function Playfield(grid_width) {
             other_index = this.get_index_above(other_index);
 
             //if other_index points to a card that's NOT in the death list
-            if (this.indicies_of_tiles_marked_for_death.indexOf(other_index) <= -1){
+            if (this.marked_for_death.indexOf(other_index) <= -1){
                 //clobber the data at other_index straight into the tile at index_num
                 this.tiles[index_num].celestial_body = this.tiles[other_index].celestial_body;
             } else {
@@ -187,20 +189,92 @@ function Playfield(grid_width) {
             this.tiles[other_index].celestial_body = "Ready for another planet!";
             other_index = this.get_index_below(other_index);
         }
-    };
-
-
+    };*/
+    //this function will be called on the highest marked for death tile in each column first followed by the lower ones.
+    this.shift_column_down_by_one_tile = function(tile_to_kill_index){
+        var j = this.get_index_above(tile_to_kill_index);
+        while(j !== false){
+            this.tiles[tile_to_kill_index].celestial_body = this.tiles[j].celestial_body;
+            tile_to_kill_index = j;
+            j = this.get_index_above(tile_to_kill_index);
+        }
+        this.tiles[tile_to_kill_index].celestial_body = this.generate_celestial_body();
+    }
+    this.kill_marked_tiles_update_tile_grid = function(){
+        var lowest_tiles_replaced_by_column = [];
+        var highest_marked_tiles_in_each_column = this.highest_tiles_marked_for_death_by_column();
+        for(var i = 0; i < highest_marked_tiles_in_each_column.length; i++){
+            lowest_tiles_replaced_by_column.push(highest_marked_tiles_in_each_column[i]);
+            if(highest_marked_tiles_in_each_column[i] !== -1){
+                this.shift_column_down_by_one_tile(highest_marked_tiles_in_each_column[i]);
+                var j = this.get_index_below(highest_marked_tiles_in_each_column[i]);
+                while(j !== false){
+                    if(this.marked_for_death[j] === true){
+                        lowest_tiles_replaced_by_column[i] = j;
+                        this.shift_column_down_by_one_tile(j);
+                    }
+                    j = this.get_index_below(j);
+                }
+            }
+        }
+        return lowest_tiles_replaced_by_column;
+    }
+    this.find_tiles_to_check = function(lowest_tiles_replaced_by_column){
+        var tiles_to_check = [];
+        for(var i = 0; i < lowest_tiles_replaced_by_column.length; i++){
+            if(lowest_tiles_replaced_by_column[i] !== -1){
+                tiles_to_check.push(lowest_tiles_replaced_by_column[i]);
+                j = this.get_index_above(lowest_tiles_replaced_by_column[i]);
+                while(j !== false){
+                    tiles_to_check.push(j);
+                    j = this.get_index_above(lowest_tiles_replaced_by_column[i]);
+                }
+            }
+        }
+    }
+    this.swap_attempt = function(first_tile_index, second_tile_index){
+        this.simple_swap(first_tile_index, second_tile_index);
+        var swap_success = this.check_for_matches(first_tile_index);
+        swap_success = swap_success || this.check_for_matches(second_tile_index);
+        if(!swap_success){
+            this.simple_swap(first_tile_index,second_tile_index);
+            return;
+        }
+        var tiles_to_kill = true;
+        while(tiles_to_kill){
+            tiles_to_kill = false;
+            var lowest_tiles_replaced_by_column = this.kill_marked_tiles_update_tile_grid();
+            var tiles_to_check = this.find_tiles_to_check(lowest_tiles_replaced_by_column);
+            for(var i = 0; i < tiles_to_check.length; i++){
+                tiles_to_kill = tiles_to_kill || this.check_for_matches(tiles_to_check[i]);
+            }
+        }
+    }
     this.simple_swap = function(one_index, other_index) {
         var temp = this.tiles[one_index].celestial_body;
         this.tiles[one_index].celestial_body = this.tiles[other_index].celestial_body;
         this.tiles[other_index].celestial_body = temp;
     };
-
     this.check_for_matches = function(original_index) {
         var index_of_interest = original_index;
         while ((this.get_index_left(index_of_interest) || this.get_index_left(index_of_interest) ===0) && true){
             //TODO: finish
         }
+    }
+    this.highest_tiles_marked_for_death_by_column = function(){
+        var highest_tiles = [];
+        for(var i = 0; i < this.playfield_width; i++){
+            var j = i;
+            while(j !== false && this.marked_for_death[j] !== true){
+                j = this.get_index_below(j);
+            }
+            if (j === false) highest_tiles.push(-1);
+            else highest_tiles.push(j);
+        }
+        return highest_tiles;
+    }
+    this.generate_celestial_body = function (){
+        return this.celestial_bodies[Math.floor(Math.random()*this.celestial_bodies.length)];
     }
 
 }
