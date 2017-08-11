@@ -346,7 +346,7 @@ function Playfield(grid_width) {
         do {
             horizontal_array.push(index_of_interest);
             index_of_interest = this.get_index_right(index_of_interest);
-        } while(this.tiles[index_of_interest].celestial_body === this.tiles[original_index].celestial_body);
+        } while(index_of_interest && this.tiles[index_of_interest].celestial_body === this.tiles[original_index].celestial_body);
 
         //same thing as above but vertical
 
@@ -359,7 +359,7 @@ function Playfield(grid_width) {
         do {
             vertical_array.push(index_of_interest);
             index_of_interest = this.get_index_below(index_of_interest);
-        } while(this.tiles[index_of_interest].celestial_body === this.tiles[original_index].celestial_body);
+        } while(index_of_interest && this.tiles[index_of_interest].celestial_body === this.tiles[original_index].celestial_body);
 
         //if there's 3 or more in a row, mark each of those indices for death
         if (horizontal_array.length >= 3){
