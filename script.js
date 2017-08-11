@@ -1,10 +1,10 @@
 // constructor for entire Game object
 $(document).ready(initialize);
-
+var game;
 function initialize(){
     //create_test_html();
     vache_builds_kick_ass_dom_elements();
-    var game = new Game();
+    game = new Game();
 }
 function create_test_html(){
     var temp = $('<div>').addClass('playfield');
@@ -17,7 +17,6 @@ function create_test_html(){
     }
 }
 function vache_builds_kick_ass_dom_elements (){
-    debugger;
     //Header
     var $header = $('<header>');
     $header.appendTo('body');
@@ -213,7 +212,9 @@ function Game() {
         this.tile_clicked = function (tile_index) {
             if (this.first_tile_clicked === null) this.first_tile_clicked = tile_index;
             else {
-                this.swap_attempt(this.first_tile_clicked, tile_index);
+                //this.swap_attempt(this.first_tile_clicked, tile_index);
+                false_swap_animation_vertical(this.first_tile_clicked,tile_index);
+
                 this.first_tile_clicked = null;
             }
             console.log("Tile " + tile_index + " was clicked.");
@@ -544,3 +545,13 @@ function Game() {
 //var The_Game = new Game();
 //The_Game.playfield.populateForTesting();
 // The_Game.playfield.check_for_matches(2);
+function false_swap_animation_vertical(first_tile_index, second_tile_index ) {
+    var $top_element = $(document.getElementById(first_tile_index));
+    var $bottom_element = $(document.getElementById(second_tile_index));
+
+    $top_element.animate({bottom: '86px'});
+    $top_element.animate({bottom: '0px'});
+
+    $bottom_element.animate({top: '86px'});
+    $bottom_element.animate({top: '0'});
+}
