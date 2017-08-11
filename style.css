@@ -1,3 +1,38 @@
+/*Start Game*/
+
+.start_game {
+    display: flex;
+    height: 100vh;
+}
+
+.start_game > h1 {
+    margin : auto;
+    font-size: 5em;
+}
+
+.start_game > h1 > a {
+    list-style-type: none;
+    color: white;
+}
+
+    /*Audio Control*/
+    .panel-heading {
+        position : fixed;
+        top: 0;
+        right: 0;
+    }
+
+    .glyphicon-volume-up {
+        color: white;
+        font-size: 4em;
+        margin : .5em;
+    }
+
+    .glyphicon-volume-off {
+        color: white;
+        font-size: 4em;
+    }
+
 
 /*Body background and font family for entire page*/
 
@@ -133,15 +168,15 @@ h1 {
 }
 
 
-/*@media all and (max-width: 640px) {*/
+@media all and (max-width: 640px) {
 
-    /*#game_area {*/
-        /*flex-flow: column;*/
-    /*}*/
+    #game_area {
+        flex-flow: column;
+    }
 
 
-    /*#game_area > .left_field, #game_area > .right_field, header, footer {*/
-        /*min-height: 50px;*/
-        /*max-height: 50px;*/
-    /*}*/
-/*}*/
+    #game_area > .left_field, #game_area > .right_field, header, footer {
+        min-height: 50px;
+        max-height: 50px;
+    }
+}
