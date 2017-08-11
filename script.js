@@ -17,6 +17,7 @@ function create_test_html(){
     }
 }
 function vache_builds_kick_ass_dom_elements (){
+    debugger;
     //Header
     var $header = $('<header>');
     $header.appendTo('body');
@@ -27,7 +28,7 @@ function vache_builds_kick_ass_dom_elements (){
 
     // Game Area
     var $div1 = $('<div>', {
-        id: 'game_area',
+        id: 'game_area'
     });
     $div1.appendTo('body');
 
@@ -143,7 +144,8 @@ function Game() {
             if(clicked_element.parentElement.id === 'playfield'){
                 this.playfield.handle_click(clicked_element);
             }
-        };*/
+            */
+        };
 
         //function to log a game with a 5x4 grid. I am too tired to write it so that it logs
         this.log_gamestate = function () {
@@ -180,7 +182,7 @@ function Game() {
 
         this.init();
 
-    };
+    }
 
     function Playfield(grid_width) {
         this.tiles = [];
@@ -536,7 +538,7 @@ function Game() {
             }
         }
 
-    }
+
 }
 
 //var The_Game = new Game();
