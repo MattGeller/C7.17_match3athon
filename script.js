@@ -103,7 +103,8 @@ function Playfield(grid_width) {
         }
     };
     this.tile_clicked = function (tile_index){
-        if(this.first_tile_clicked === null) this.first_tile_clicked = tile_index;
+        if(this.first_tile_clicked === null)
+            this.first_tile_clicked = tile_index;
         else {
             this.swap_attempt(this.first_tile_clicked, tile_index);
             this.first_tile_clicked = null;
@@ -118,6 +119,12 @@ function Playfield(grid_width) {
         this.tiles[0].celestial_body = "Earth";
         this.tiles[1].celestial_body = "Mars";
         this.tiles[2].celestial_body = "Jupiter";
+    };
+
+    this.clean_death_markers = function () {
+        for(var i = 0; i < this.marked_for_death.length; i++){
+            this.marked_for_death[i] = false;
+        }
     };
 
     this.populateForTesting = function () {
@@ -143,23 +150,23 @@ function Playfield(grid_width) {
         this.tiles.push(new Tile());
 
         this.tiles[0].celestial_body = "Mars";
-        this.tiles[1].celestial_body = "Earth";
+        this.tiles[1].celestial_body = "Jupiter";
         this.tiles[2].celestial_body = "Earth";
         this.tiles[3].celestial_body = "Earth";
         this.tiles[4].celestial_body = "Saturn";
-        this.tiles[5].celestial_body = "Mars";
+        this.tiles[5].celestial_body = "Saturn";
         this.tiles[6].celestial_body = "Jupiter";
         this.tiles[7].celestial_body = "Earth";
         this.tiles[8].celestial_body = "Jupiter";
         this.tiles[9].celestial_body = "Saturn";
         this.tiles[10].celestial_body = "Jupiter";
         this.tiles[11].celestial_body = "Mars";
-        this.tiles[12].celestial_body = "Earth";
-        this.tiles[13].celestial_body = "Saturn";
-        this.tiles[14].celestial_body = "Mars";
+        this.tiles[12].celestial_body = "Saturn";
+        this.tiles[13].celestial_body = "Earth";
+        this.tiles[14].celestial_body = "Earth";
         this.tiles[15].celestial_body = "Venus";
         this.tiles[16].celestial_body = "Mars";
-        this.tiles[17].celestial_body = "Jupiter";
+        this.tiles[17].celestial_body = "Earth";
         this.tiles[18].celestial_body = "Mars";
         this.tiles[19].celestial_body = "Saturn";
         this.playfield_width = 5;
@@ -266,7 +273,7 @@ function Playfield(grid_width) {
             j = this.get_index_above(tile_to_kill_index);
         }
         this.tiles[tile_to_kill_index].celestial_body = this.generate_celestial_body();
-    }
+    };
     this.kill_marked_tiles_update_tile_grid = function(){
         var lowest_tiles_replaced_by_column = [];
         var highest_marked_tiles_in_each_column = this.highest_tiles_marked_for_death_by_column();
@@ -285,25 +292,27 @@ function Playfield(grid_width) {
             }
         }
         return lowest_tiles_replaced_by_column;
-    }
+    };
     this.find_tiles_to_check = function(lowest_tiles_replaced_by_column){
         var tiles_to_check = [];
         for(var i = 0; i < lowest_tiles_replaced_by_column.length; i++){
             if(lowest_tiles_replaced_by_column[i] !== -1){
                 tiles_to_check.push(lowest_tiles_replaced_by_column[i]);
-                j = this.get_index_above(lowest_tiles_replaced_by_column[i]);
+                var j = this.get_index_above(lowest_tiles_replaced_by_column[i]);
                 while(j !== false){
                     tiles_to_check.push(j);
                     j = this.get_index_above(lowest_tiles_replaced_by_column[i]);
                 }
             }
         }
-    }
+    };
+
     this.swap_attempt = function(first_tile_index, second_tile_index){
+        debugger;
         this.simple_swap(first_tile_index, second_tile_index);
         var swap_success = this.check_for_matches(first_tile_index);
         swap_success = swap_success || this.check_for_matches(second_tile_index);
-        if(!swap_success){
+        if(!swap_success){ // if there are no matches, simply swap the tiles back to where they were originally
             this.simple_swap(first_tile_index,second_tile_index);
             return;
         }
@@ -316,22 +325,14 @@ function Playfield(grid_width) {
                 tiles_to_kill = tiles_to_kill || this.check_for_matches(tiles_to_check[i]);
             }
         }
-    }
-    this.swap_attempt = function (index_1, index_2) {
-        this.simple_swap(index_1,index_2);
-        if(!(this.check_for_matches(index_1) || this.check_for_matches(index_2))){
-            this.simple_swap(index_1,index_2);
-            return false;
-        }
-        return true;
     };
+
     this.simple_swap = function(one_index, other_index) {
         var temp = this.tiles[one_index].celestial_body;
         this.tiles[one_index].celestial_body = this.tiles[other_index].celestial_body;
         this.tiles[other_index].celestial_body = temp;
     };
     this.check_for_matches = function(original_index) {
-        debugger;
         var horizontal_array = [];
         var vertical_array = [];
         var index_of_interest = original_index;
@@ -377,7 +378,7 @@ function Playfield(grid_width) {
         }
         //return true or false, depending on whether anything became marked for death.
         return returnbool;
-    }
+    };
     this.highest_tiles_marked_for_death_by_column = function(){
         var highest_tiles = [];
         for(var i = 0; i < this.playfield_width; i++){
@@ -389,7 +390,7 @@ function Playfield(grid_width) {
             else highest_tiles.push(j);
         }
         return highest_tiles;
-    }
+    };
     this.generate_celestial_body = function (){
         return this.celestial_bodies[Math.floor(Math.random()*this.celestial_bodies.length)];
     }
@@ -407,6 +408,3 @@ function Tile () {
 
 }
 
-//var The_Game = new Game();
-//The_Game.playfield.populateForTesting();
-// The_Game.playfield.check_for_matches(2);
