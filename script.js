@@ -438,7 +438,7 @@ function Playfield(grid_width) {
         this.tiles[other_index].change_celestial_body(temp);
     };
     this.check_for_matches = function(original_index) {
-        debugger;
+        //debugger;
         var horizontal_array = [];
         var vertical_array = [];
         var index_of_interest = original_index;
