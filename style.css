@@ -90,6 +90,7 @@ body {
     margin: 4vmin;
     border-radius: 30pt;
     background-color: black;
+    border: solid mediumpurple .5em;
     opacity: .8;
     font-size: 1.5vw;
     text-align: center;
@@ -99,14 +100,12 @@ body {
     /*Progress Bar*/
 
     .progressbar {
-        height: 2em;
-        width: 10em;
-        border: 5px solid mediumpurple;
+        height: 50vh;
+        width: 5vw;
+        border: .5em solid mediumpurple;
+        background-color: #00c5ff;
         border-radius: 30pt;
-        position: relative;
-        top: 20vh;
-        left: 1vw;
-        transform: rotate(90deg);
+        margin: auto;
     }
 
 
@@ -116,6 +115,7 @@ body {
     margin: 4vmin;
     border-radius: 30pt;
     background-color: black;
+    border: solid mediumpurple .5em;
     opacity: .8;
     font-size: 1.5vw;
     text-align: center;
@@ -126,7 +126,7 @@ body {
 /*Level*/
 
     .level {
-        color: white;
+        color: #00c5ff;
         font-size: 8vw;
     }
 
