@@ -397,7 +397,7 @@ function Game() {
             for (var i = 0; i < lowest_tiles_replaced_by_column.length; i++) {
                 if (lowest_tiles_replaced_by_column[i] !== -1) {
                     tiles_to_check.push(lowest_tiles_replaced_by_column[i]);
-                    j = this.get_index_above(lowest_tiles_replaced_by_column[i]);
+                    var j = this.get_index_above(lowest_tiles_replaced_by_column[i]);
                     while (j !== false) {
                         tiles_to_check.push(j);
                         j = this.get_index_above(lowest_tiles_replaced_by_column[i]);
