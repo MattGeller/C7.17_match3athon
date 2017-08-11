@@ -43,7 +43,7 @@ body {
     width: 6vw;
     height: 8vh;
     position: relative;
-    background: url('assets/saturn.png') no-repeat;
+    #background: url('assets/saturn.png') no-repeat;
     margin: auto;
     animation: spintile 40s infinite linear;
 }
