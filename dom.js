@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+// Body Fade In
+
+$('body').css('display', 'none');
+
+$('body').fadeIn(2000);
+
 
 // Header
 
@@ -15,7 +21,7 @@ $header.appendTo('body');
 // Game Area
 
 var $div1 = $('<div>', {
-    id: 'game_area',
+    id: 'game_area'
 });
 $div1.appendTo('body');
 
@@ -28,7 +34,8 @@ var $div2 = $('<div>', {
 $div2.appendTo('#game_area');
 
     var $h2 = $('<h2>', {
-        text: "SCORE"
+        text: "SCORE",
+        class: "animated infinite pulse"
     });
     $h2.appendTo('.left_field');
 
@@ -71,36 +78,94 @@ $div4.appendTo('#game_area');
         $div5.appendTo('.play_field');
     }
 
-    $('.tile').click(function(){
-        $(this).css('order', 9);
-        $(this).css({bottom: '86px'});
-        $('#9').remove();
-        var $div7 = $('<div>', {
-            class: 'tile',
-            id: 1
-        });
-        $div7.css('order', 1);
-        $div7.html('<img src="assets/mars.png">');
-        $div7.appendTo('.play_field');
-        $(this).animate({top: '0'});
+    var first_tile_index = 1;
+    var second_tile_index = 10;
+
+    // Move planet down
+
+    // $('.tile').click(move_planet_down);
+    //
+    // function move_planet_down() {
+    //     $(this).css('order', 9);
+    //     $(this).css({bottom: '86px'});
+    //     $('#9').remove();
+    //     var $div6 = $('<div>', {
+    //         class: 'tile',
+    //         id: 1
+    //     });
+    //     $div6.css('order', 1);
+    //     $div6.html('<img src="assets/mars.png">');
+    //     $div6.appendTo('.play_field');
+    //     $(this).animate({top: '0'});
+    // }
+
+
+    // False swap animation vertical
+
+    // $('.tile').click(false_swap_animation_vertical);
+    //
+    // function false_swap_animation_vertical(first_tile_index, second_tile_index ) {
+    //     $(this).css('order', first_tile_index);
+    //     $(this).animate({bottom: '86px'});
+    //     $(this).css('order', second_tile_index );
+    //     $(this).animate({bottom: '0px'});
+    // }
+
+    function false_swap_animation_vertical(first_tile_index, second_tile_index ) {
+        var $top_element = $(document.getElementById(first_tile_index));
+        var $bottom_element = $(document.getElementById(second_tile_index));
+
+        $top_element.animate({bottom: '86px'});
+        $top_element.animate({bottom: '0px'});
+
+        $bottom_element.animate({top: '86px'});
+        $bottom_element.animate({top: '0'});
+    }
+
+    // False swap animation horizontal
+
+    var first_tile_clicked = null;
+    var second_tile_clicked = null;
+
+    $('.tile').click(function () {
+        tile_clicked(parseInt($(this).attr('id')));
+        // debugger;
     });
 
+    function tile_clicked(tile_index){
+        debugger;
+        if(first_tile_clicked === null)
+            first_tile_clicked = tile_index;
+        else {
+            false_swap_animation_vertical(first_tile_clicked, tile_index);
+            first_tile_clicked = null;
+        }
+        console.log("Tile " + tile_index + " was clicked.");
+    }
+
+    // function false_swap_animation_horizontal() {
+    //     $(this).css('order', 2);
+    //     $(this).css({right: '86px'});
+    //     $(this).css('order', 3);
+    //     $(this).animate({left: '0'});
+    // }
 
 
 // Right Field
 
-var $div6 = $('<div>', {
+var $div7 = $('<div>', {
     class: 'right_field'
 });
-$div6.appendTo('#game_area');
+$div7.appendTo('#game_area');
 
     $h2 = $('<h2>', {
-        text: "LEVEL"
+        text: 'LEVEL',
+        class: 'animated infinite pulse'
     });
     $h2.appendTo('.right_field');
 
     $p = $('<p>', {
-        class: 'level',
+        class: 'level animated infinite pulse',
         text: "3"
     });
     $p.appendTo('.right_field');
@@ -114,19 +179,17 @@ $footer.appendTo('body');
 
 // Win Modal
 
-// var $div6 = $('<div>',{
-//    class: 'modal',
-//     id: 'win_modal',
-//     role: 'dialog'
-// });
-// $div6.appendTo('body');
-//
-//     var $div7 = $('<div>',{
-//        class: 'modal-dialog win'
-//     });
-//     $div7.appendTo.($div6);
+var $div8 = $('<div>',{
+   class: 'modal',
+    id: 'win_modal',
+    role: 'dialog'
+});
+$div8.appendTo('body');
 
-
+    var $div9 = $('<div>',{
+       class: 'modal-dialog win'
+    });
+    $div9.appendTo($div8);
 
 
 });

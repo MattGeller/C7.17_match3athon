@@ -1,3 +1,38 @@
+/*Start Game*/
+
+.start_game {
+    display: flex;
+    height: 100vh;
+}
+
+.start_game > h1 {
+    margin : auto;
+    font-size: 5em;
+}
+
+.start_game > h1 > a {
+    list-style-type: none;
+    color: white;
+}
+
+    /*Audio Control*/
+    .panel-heading {
+        position : fixed;
+        top: 0;
+        right: 0;
+    }
+
+    .glyphicon-volume-up {
+        color: white;
+        font-size: 4em;
+        margin : .5em;
+    }
+
+    .glyphicon-volume-off {
+        color: white;
+        font-size: 4em;
+    }
+
 
 /*Body background and font family for entire page*/
 
@@ -55,6 +90,7 @@ body {
     margin: 4vmin;
     border-radius: 30pt;
     background-color: black;
+    border: solid mediumpurple .5em;
     opacity: .8;
     font-size: 1.5vw;
     text-align: center;
@@ -64,14 +100,12 @@ body {
     /*Progress Bar*/
 
     .progressbar {
-        height: 2em;
-        width: 10em;
-        border: 5px solid mediumpurple;
+        height: 50vh;
+        width: 5vw;
+        border: .5em solid mediumpurple;
+        background-color: #00c5ff;
         border-radius: 30pt;
-        position: relative;
-        top: 20vh;
-        left: 1vw;
-        transform: rotate(90deg);
+        margin: auto;
     }
 
 
@@ -81,6 +115,7 @@ body {
     margin: 4vmin;
     border-radius: 30pt;
     background-color: black;
+    border: solid mediumpurple .5em;
     opacity: .8;
     font-size: 1.5vw;
     text-align: center;
@@ -91,7 +126,7 @@ body {
 /*Level*/
 
     .level {
-        color: white;
+        color: #00c5ff;
         font-size: 8vw;
     }
 
@@ -133,15 +168,15 @@ h1 {
 }
 
 
-/*@media all and (max-width: 640px) {*/
+@media all and (max-width: 640px) {
 
-    /*#game_area {*/
-        /*flex-flow: column;*/
-    /*}*/
+    #game_area {
+        flex-flow: column;
+    }
 
 
-    /*#game_area > .left_field, #game_area > .right_field, header, footer {*/
-        /*min-height: 50px;*/
-        /*max-height: 50px;*/
-    /*}*/
-/*}*/
+    #game_area > .left_field, #game_area > .right_field, header, footer {
+        min-height: 50px;
+        max-height: 50px;
+    }
+}
